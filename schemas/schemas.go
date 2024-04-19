@@ -20,6 +20,11 @@ type User struct {
 	Profile         Profile
 }
 
+// Valid implements jwt.Claims.
+func (u *User) Valid() error {
+	panic("unimplemented")
+}
+
 type Profile struct {
 	gorm.Model
 	ID                uuid.UUID `gorm:"primaryKey"`
