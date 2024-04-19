@@ -20,7 +20,6 @@ type User struct {
 	Profile         Profile
 }
 
-// Valid implements jwt.Claims.
 func (u *User) Valid() error {
 	panic("unimplemented")
 }

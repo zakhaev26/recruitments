@@ -10,7 +10,8 @@ import (
 var secretKey = []byte("your_secret_key")
 
 type Claims struct {
-	UserID uuid.UUID `json:"id"`
+	UserID   uuid.UUID `json:"id"`
+	UserType string    `json:"userType"`
 	jwt.StandardClaims
 }
 

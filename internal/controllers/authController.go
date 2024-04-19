@@ -1,4 +1,4 @@
-package auth
+package controllers
 
 import (
 	"encoding/json"
@@ -11,14 +11,6 @@ import (
 	"github.com/zakhaev26/recruitments/utils"
 	"gorm.io/gorm"
 )
-
-type Controller struct {
-	db *gorm.DB
-}
-
-func NewController(db *gorm.DB) *Controller {
-	return &Controller{db}
-}
 
 func (c *Controller) SignUpController(w http.ResponseWriter, r *http.Request) {
 	log.Info("aya")
