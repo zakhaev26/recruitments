@@ -15,11 +15,12 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GenerateAccessToken(userID uuid.UUID) (string, error) {
+func GenerateAccessToken(userID uuid.UUID, userType string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, Claims{
-		UserID: userID,
+		UserID:   userID,
+		UserType: userType,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(10 * time.Second).Unix(),
+			ExpiresAt: time.Now().Add(60 * time.Minute * 24).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
 	})

@@ -29,11 +29,15 @@ func AuthorizationMiddleware(next http.HandlerFunc, allowedRoles []string) http.
 			http.Error(w, "Failed to parse token from headers", http.StatusBadRequest)
 			return
 		}
+
 		for _, v := range allowedRoles {
 			if v == claims.UserType {
 				next(w, r)
-				break
+				return
 			}
 		}
+
+		log.Error(err)
+		http.Error(w, "Failed to find user", http.StatusInternalServerError)
 	}
 }

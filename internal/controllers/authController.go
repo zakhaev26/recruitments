@@ -103,7 +103,7 @@ func (c *Controller) LoginController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := utils.GenerateAccessToken(user.ID)
+	token, err := utils.GenerateAccessToken(user.ID, user.UserType)
 	if err != nil {
 		http.Error(w, "Invalid password", http.StatusBadRequest)
 		return

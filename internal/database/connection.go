@@ -24,7 +24,7 @@ func InitAuth() {
 		os.Exit(1)
 	}
 	log.Info("Connected to PostgreSQL")
-	if err := Db.AutoMigrate(&schemas.User{}, &schemas.Profile{}, &schemas.Job{}); err != nil {
+	if err := Db.AutoMigrate(&schemas.User{}, &schemas.Profile{}, &schemas.Job{}, &schemas.File{}); err != nil {
 		log.Error("Schema Migration Failed", "err", err)
 		return
 	}

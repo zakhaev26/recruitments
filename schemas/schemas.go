@@ -47,3 +47,12 @@ type Job struct {
 	PostedByID        uuid.UUID `gorm:"unique"`
 	PostedBy          User      `gorm:"foreignKey:PostedByID"`
 }
+
+type File struct {
+	gorm.Model
+	UserID   uuid.UUID
+	User     User
+	FileName string
+	FileType string
+	FileData []byte // Store file content as bytes
+}
