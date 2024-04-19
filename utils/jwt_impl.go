@@ -4,16 +4,17 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 )
 
 var secretKey = []byte("your_secret_key")
 
 type Claims struct {
-	UserID string `json:"id"`
+	UserID uuid.UUID `json:"id"`
 	jwt.StandardClaims
 }
 
-func GenerateAccessToken(userID string) (string, error) {
+func GenerateAccessToken(userID uuid.UUID) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, Claims{
 		UserID: userID,
 		StandardClaims: jwt.StandardClaims{

@@ -14,7 +14,7 @@ type User struct {
 	Email           string
 	Address         string
 	UserType        string
-	PasswordHash    string
+	Password        string
 	ProfileHeadline string
 	ProfileID       uuid.UUID
 	Profile         Profile
