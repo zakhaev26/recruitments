@@ -13,7 +13,6 @@ import (
 )
 
 func (c *Controller) SignUpController(w http.ResponseWriter, r *http.Request) {
-	log.Info("aya")
 	var (
 		reqBody struct {
 			User    schemas.User    `json:"user"`
@@ -63,7 +62,10 @@ func (c *Controller) SignUpController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(reqBody.User)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "user created successfully",
+	})
 }
 
 func (c *Controller) LoginController(w http.ResponseWriter, r *http.Request) {
@@ -108,6 +110,7 @@ func (c *Controller) LoginController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"accessToken": token,
 	})

@@ -22,7 +22,6 @@ func (c *Controller) ApplyJobController(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		log.Error(err)
 		http.Error(w, "Failed to parse token from headers", http.StatusBadRequest)
-
 		return
 	}
 
@@ -47,6 +46,7 @@ func (c *Controller) ApplyJobController(w http.ResponseWriter, r *http.Request) 
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte("Job application submitted successfully"))
 
 }
