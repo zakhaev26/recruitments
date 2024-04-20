@@ -44,8 +44,8 @@ type Job struct {
 	PostedOn          time.Time
 	TotalApplications int
 	CompanyName       string
-	PostedByID        uuid.UUID 
-	PostedBy          User      `gorm:"foreignKey:PostedByID"`
+	PostedByID        uuid.UUID
+	PostedBy          User `gorm:"foreignKey:PostedByID"`
 }
 
 type File struct {
@@ -69,4 +69,13 @@ type Summary struct {
 		Title        string `json:"title"`
 		Organization string `json:"organization"`
 	} `json:"experience"`
+}
+
+type Applications struct {
+	gorm.Model
+	ID     uuid.UUID `gorm:"primaryKey"`
+	UserID uuid.UUID
+	User   User
+	JobID  uuid.UUID
+	Job    Job
 }

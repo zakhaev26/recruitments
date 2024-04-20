@@ -11,11 +11,6 @@ func AuthorizationMiddleware(next http.HandlerFunc, allowedRoles []string) http.
 
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		if len(allowedRoles) == 1 && allowedRoles[0] == "*" {
-			next(w, r)
-			return
-		}
-
 		token, err := utils.ExtractTokenFromHeader(r)
 		if err != nil {
 			log.Error(err)
@@ -27,6 +22,11 @@ func AuthorizationMiddleware(next http.HandlerFunc, allowedRoles []string) http.
 		if err != nil {
 			log.Error(err)
 			http.Error(w, "Failed to parse token from headers", http.StatusBadRequest)
+			return
+		}
+
+		if len(allowedRoles) == 1 && allowedRoles[0] == "*" {
+			next(w, r)
 			return
 		}
 
