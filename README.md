@@ -92,7 +92,7 @@ curl --location '127.0.0.1:3000/api/v1/login' \
 }'
 ```
 
-> Response : 
+- Response
 
 ```bash
 {
@@ -100,7 +100,7 @@ curl --location '127.0.0.1:3000/api/v1/login' \
 }
 ```
 
-> NOTE : Use this accessToken value in the request's authorization as Bearer <accessToken>
+> NOTE : Use this accessToken value in the request's authorization as Bearer (accessToken)
 
 ## Upload resume
 
@@ -112,7 +112,7 @@ curl --location '127.0.0.1:3000/api/v1/uploadResume' \
 --data '@/home/soubhik/Downloads/soubhik_resume_march.pdf'
 ```
 
-> Response :
+- Response 
 
 ```bash
 File uploaded successfully. File saved in the database.
@@ -133,7 +133,8 @@ curl --location '127.0.0.1:3000/api/v1/login' \
 }'
 ```
 
-> Response: 
+- Response: 
+
 ```bash
 {
     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmODI0YWE4LTYwYmItNDI2ZC1hN2UyLWFhNTg1MzYzNWQ4MSIsInVzZXJUeXBlIjoiYWRtaW4iLCJQcm9maWxlSUQiOiJkZjUxOTE0YS1iOTEyLTQyZjQtODA2My01NTJhYTFjYzEyOTgiLCJleHAiOjE3MTM3MTY5NjEsImlhdCI6MTcxMzYzMDU2MX0.3737cbdLOm95W7w-NHtA8en8QyHZNRdI90Cf5Cj36B4"
@@ -157,7 +158,7 @@ curl --location '127.0.0.1:3000/api/v1/admin/job' \
 '
 ```
 
-> Response:
+- Response
 ```bash
 {
     "CreatedAt": "2024-04-20T22:01:09.006565678+05:30",
@@ -208,7 +209,7 @@ curl --location '127.0.0.1:3000/api/v1/jobs' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlmODI0YWE4LTYwYmItNDI2ZC1hN2UyLWFhNTg1MzYzNWQ4MSIsInVzZXJUeXBlIjoiYWRtaW4iLCJQcm9maWxlSUQiOiJkZjUxOTE0YS1iOTEyLTQyZjQtODA2My01NTJhYTFjYzEyOTgiLCJleHAiOjE3MTM3MTY5NjEsImlhdCI6MTcxMzYzMDU2MX0.3737cbdLOm95W7w-NHtA8en8QyHZNRdI90Cf5Cj36B4'
 ```
 
-- Respone
+- Response
 ```bash
 [
     {
