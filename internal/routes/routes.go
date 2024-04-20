@@ -15,7 +15,7 @@ func Router() *mux.Router {
 	r.HandleFunc("/api/v1/login", c.LoginController).Methods("post")
 	r.HandleFunc("/api/v1/uploadResume", middleware.AuthorizationMiddleware(c.ResumeUploadController, []string{constants.APPLICANT})).Methods("post")
 	r.HandleFunc("/api/v1/admin/job", middleware.AuthorizationMiddleware(c.CreateJobController, []string{constants.ADMIN})).Methods("post")
-	// query route
+	// query route...
 	r.HandleFunc("/api/v1/admin/job", middleware.AuthorizationMiddleware(c.JobDetailController, []string{constants.ADMIN})).Methods("get")
 	r.HandleFunc("/api/v1/admin/applicants", middleware.AuthorizationMiddleware(c.ApplicantsController, []string{constants.ADMIN})).Methods("get")
 	r.HandleFunc("/api/v1/admin/applicant", middleware.AuthorizationMiddleware(c.GetApplicantInformation, []string{constants.ADMIN})).Methods("get")
