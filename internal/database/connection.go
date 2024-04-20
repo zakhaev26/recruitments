@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/charmbracelet/log"
+	"github.com/joho/godotenv"
 	"github.com/zakhaev26/recruitments/schemas"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -13,9 +14,15 @@ var Db *gorm.DB
 
 func InitAuth() {
 
-	var err error
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	DATABASE_CONNECTION_STRING := os.Getenv("DB_DEV")
+
 	Db, err = gorm.Open(postgres.New(postgres.Config{
-		DSN:                  "user=postgres password=admin dbname=synergylabs host=localhost port=5432 sslmode=disable TimeZone=Asia/Shanghai",
+		DSN:                  DATABASE_CONNECTION_STRING,
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{})
 
@@ -24,7 +31,7 @@ func InitAuth() {
 		os.Exit(1)
 	}
 	log.Info("Connected to PostgreSQL")
-	if err := Db.AutoMigrate(&schemas.User{}, &schemas.Profile{}, &schemas.Job{}, &schemas.File{}, &schemas.Applications{}	); err != nil {
+	if err := Db.AutoMigrate(&schemas.User{}, &schemas.Profile{}, &schemas.Job{}, &schemas.File{}, &schemas.Applications{}); err != nil {
 		log.Error("Schema Migration Failed", "err", err)
 		return
 	}

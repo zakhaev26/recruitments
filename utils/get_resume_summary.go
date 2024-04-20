@@ -6,17 +6,27 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func GetResumeSummary(buffer bytes.Buffer) (string, error) {
-	req, err := http.NewRequest("POST", "https://api.apilayer.com/resume_parser/upload", &buffer)
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	RESUME_PARSER_API_KEY := os.Getenv("RESUME_PARSER_API_KEY")
+	RESUME_PARSER_URI := os.Getenv("RESUME_PARSER_URL")
+	req, err := http.NewRequest("POST", RESUME_PARSER_URI, &buffer)
 	if err != nil {
 		return "", fmt.Errorf("error creating request: %v", err)
 	}
 
 	req.Header.Set("Content-Type", "application/octet-stream")
-	req.Header.Set("apikey", "gNiXyflsFu3WNYCz1ZCxdWDb7oQg1Nl1")
-	log.Printf("idhar agaya hun")
+	req.Header.Set("apikey", RESUME_PARSER_API_KEY)
 	client := &http.Client{}
 
 	resp, err := client.Do(req)
