@@ -38,6 +38,6 @@ func AuthorizationMiddleware(next http.HandlerFunc, allowedRoles []string) http.
 		}
 
 		log.Error(err)
-		http.Error(w, "Failed to find user", http.StatusInternalServerError)
+		http.Error(w, "Unauthorized!", http.StatusInternalServerError)
 	}
 }

@@ -44,7 +44,7 @@ type Job struct {
 	PostedOn          time.Time
 	TotalApplications int
 	CompanyName       string
-	PostedByID        uuid.UUID `gorm:"unique"`
+	PostedByID        uuid.UUID 
 	PostedBy          User      `gorm:"foreignKey:PostedByID"`
 }
 
