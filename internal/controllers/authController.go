@@ -57,7 +57,6 @@ func (c *Controller) SignUpController(w http.ResponseWriter, r *http.Request) {
 
 	user.ProfileID = profile.ID
 	user.Profile = profile
-
 	if err := c.db.Create(&user).Error; err != nil {
 		http.Error(w, "Failed to create user", http.StatusInternalServerError)
 		return
@@ -103,7 +102,7 @@ func (c *Controller) LoginController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := utils.GenerateAccessToken(user.ID, user.UserType)
+	token, err := utils.GenerateAccessToken(user.ID, user.UserType, user.ProfileID)
 	if err != nil {
 		http.Error(w, "Invalid password", http.StatusBadRequest)
 		return

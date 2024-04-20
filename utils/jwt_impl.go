@@ -12,13 +12,15 @@ var secretKey = []byte("your_secret_key")
 type Claims struct {
 	UserID   uuid.UUID `json:"id"`
 	UserType string    `json:"userType"`
+	ProfileID  uuid.UUID 
 	jwt.StandardClaims
 }
 
-func GenerateAccessToken(userID uuid.UUID, userType string) (string, error) {
+func GenerateAccessToken(userID uuid.UUID, userType string, profileId uuid.UUID) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, Claims{
 		UserID:   userID,
 		UserType: userType,
+		ProfileID:  profileId,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(60 * time.Minute * 24).Unix(),
 			IssuedAt:  time.Now().Unix(),

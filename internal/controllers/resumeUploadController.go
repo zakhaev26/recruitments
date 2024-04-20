@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,40 +14,6 @@ import (
 )
 
 func (c *Controller) ResumeUploadController(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseMultipartForm(10 << 20)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	log.Info("hereeeeee")
-
-
-	file, _, err := r.FormFile("cv")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer file.Close()
-
-	// Check file format
-	fileType, err := utils.DetectFileType(file)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if fileType != ".pdf" && fileType != ".zip" {
-		http.Error(w, "Unsupported file format. Only PDF and DOCX are allowed.", http.StatusBadRequest)
-		return
-	}
-
-	fileData, err := io.ReadAll(file)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	token, err := utils.ExtractTokenFromHeader(r)
 	if err != nil {
 		log.Error(err)
@@ -57,17 +25,50 @@ func (c *Controller) ResumeUploadController(w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		log.Error(err)
 		http.Error(w, "Failed to parse token from headers", http.StatusBadRequest)
+
 		return
 	}
-	fmt.Println(claims.UserID)
+	var buffer bytes.Buffer
+
+	// Copy the request body to the buffer
+	_, err = io.Copy(&buffer, r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+	fileBytes := buffer.Bytes()
 	fileRecord := schemas.File{
 		UserID:   claims.UserID,
-		FileName: "uploaded_file_" + time.Now().Local().Format("2006-01-02_15-04-05") + fileType,
-		FileType: fileType,
-		FileData: fileData,
+		FileName: "uploaded_file_" + time.Now().Local().Format("2006-01-02_15-04-05") + ".pdf",
+		FileType: ".pdf",
+		FileData: &fileBytes,
 	}
 
 	c.db.Create(&fileRecord)
-	log.Info("hihiihihi")
+	summaryJSON, err := utils.GetResumeSummary(buffer)
+	if err != nil {
+		log.Error(err)
+		http.Error(w, "Error parsing CV summary", http.StatusInternalServerError)
+		return
+	}
+
+	var summary schemas.Summary
+	err = json.Unmarshal([]byte(summaryJSON), &summary)
+	if err != nil {
+		log.Error(err)
+		http.Error(w, "Error parsing CV summary", http.StatusInternalServerError)
+		return
+	}
+
+	var profile schemas.Profile
+	result := c.db.First(&profile, "id = ?", claims.ProfileID)
+	if result.Error != nil {
+		log.Error(result.Error)
+		http.Error(w, "Error patching Profiles", http.StatusInternalServerError)
+		return
+	}
+	utils.PatchProfileFromSummary(&profile, summary)
+
+	c.db.Save(profile)
 	fmt.Fprintf(w, "File uploaded successfully. File saved in the database.")
 }

@@ -54,5 +54,19 @@ type File struct {
 	User     User
 	FileName string
 	FileType string
-	FileData []byte // Store file content as bytes
+	FileData *[]byte
+}
+
+type Summary struct {
+	Name      string   `json:"name"`
+	Phone     string   `json:"phone"`
+	Skills    []string `json:"skills"`
+	Education []struct {
+		Name  string   `json:"name"`
+		Dates []string `json:"dates"`
+	} `json:"education"`
+	Experience []struct {
+		Title        string `json:"title"`
+		Organization string `json:"organization"`
+	} `json:"experience"`
 }
